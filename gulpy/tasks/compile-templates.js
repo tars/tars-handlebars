@@ -11,6 +11,7 @@ var fs = require('fs');
 var Handlebars = require('gulp-compile-handlebars/node_modules/handlebars');
 var handlebars = require('gulp-compile-handlebars');
 var digits = require('digits');
+var through2 = require('through2');
 
 var handlebarsOptions = {
         batch: ['./markup/modules'],
@@ -108,9 +109,16 @@ module.exports = function(buildOptions) {
     );
 
     return gulp.task('compile-templates', function(cb) {
+        var modulesData, error;
+
+        try {
+            modulesData = concatModulesData();
+        } catch(er) {
+            error = er;
+        }
 
         gulp.src(['./markup/pages/*.html', '!./markup/pages/_*.html'])
-            .pipe(handlebars(concatModulesData(), handlebarsOptions))
+            .pipe(error ? through2(function () {this.emit("error", error)}) : handlebars(modulesData, handlebarsOptions))
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
             }))
