@@ -103,8 +103,8 @@ module.exports = function(buildOptions) {
 
     patterns.push(
         {
-            match: '%=staticFolder=%',
-            replacement: projectConfig.fs.staticFolderName
+            match: '%=staticPrefix=%',
+            replacement: projectConfig.staticPrefix
         }
     );
 
