@@ -54,7 +54,7 @@ module.exports = function(buildOptions) {
     if (!gutil.env.ie8) {
         patterns.push(
             {
-                match: '<link href="%=staticFolder=%/css/main_ie8%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
+                match: '<link href="%=staticPrefix=%/css/main_ie8%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
                 replacement: ''
             }
         );
@@ -63,7 +63,7 @@ module.exports = function(buildOptions) {
     if (!gutil.env.ie9) {
         patterns.push(
             {
-                match: '<link href="%=staticFolder=%/css/main_ie9%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
+                match: '<link href="%=staticPrefix=%/css/main_ie9%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
                 replacement: ''
             }
         );
