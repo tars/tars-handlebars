@@ -1,40 +1,17 @@
 var gulp = require('gulp');
-var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var notify = require('gulp-notify');
 var tarsConfig = require('../../../tars-config');
-var notifyConfig = tarsConfig.notifyConfig;
 var replace = require('gulp-replace-task');
-var modifyDate = require('../../helpers/modify-date-formatter');
+var notifier = require('../../helpers/notifier');
 var browserSync = require('browser-sync');
 var fs = require('fs');
-var Handlebars = require('gulp-compile-handlebars/node_modules/handlebars');
 var handlebars = require('gulp-compile-handlebars');
-var digits = require('digits');
 var through2 = require('through2');
 
 var handlebarsOptions = {
         batch: ['./markup/modules'],
-        helpers: {
-            repeat: function(n, options) {
-                options = options || {};
-                var _data = {},
-                    content = '',
-                    count = n - 1;
-
-                if (options._data) {
-                    _data = Handlebars.createFrame(options._data);
-                }
-
-                for (var i = 0; i <= count; i++) {
-                    _data = {
-                        index: digits.pad((i + 1), {auto: n})
-                    };
-                    content += options.fn(this, {data: _data});
-                }
-                return new Handlebars.SafeString(content);
-            }
-        }
+        helpers: require('../../helpers/handlebars-helpers')
     };
 
 /**
@@ -132,17 +109,7 @@ module.exports = function(buildOptions) {
             .pipe(gulp.dest('./dev/'))
             .pipe(browserSync.reload({stream:true}))
             .pipe(
-                gulpif(notifyConfig.useNotify,
-                    notify({
-                        onLast: true,
-                        sound: notifyConfig.sounds.onSuccess,
-                        title: notifyConfig.title,
-                        message: 'Templates\'ve been compiled \n'+ notifyConfig.taskFinishedText +'<%= options.date %>',
-                        templateOptions: {
-                            date: modifyDate.getTimeOfModify()
-                        }
-                    })
-                )
+                notifier('Templates\'ve been compiled')
             );
 
         cb(null);
