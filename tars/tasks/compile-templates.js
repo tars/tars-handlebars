@@ -85,7 +85,7 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('compile-templates', function(cb) {
+    return gulp.task('html:compile-templates', function(cb) {
         var modulesData, error;
 
         try {
