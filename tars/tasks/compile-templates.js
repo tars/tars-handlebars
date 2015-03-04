@@ -37,15 +37,6 @@ module.exports = function(buildOptions) {
         );
     }
 
-    if (!gutil.env.ie9) {
-        patterns.push(
-            {
-                match: '<link href="%=staticPrefix=%/css/main_ie9%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
-                replacement: ''
-            }
-        );
-    }
-
     if (gutil.env.min || gutil.env.release) {
         patterns.push(
             {
