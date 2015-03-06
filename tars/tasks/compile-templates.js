@@ -87,9 +87,12 @@ module.exports = function(buildOptions) {
 
         gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html'])
             .pipe(error ? through2(function () {this.emit('error', '\nAn error occurred while modules data processing:\n' + error)}) : handlebars(modulesData, handlebarsOptions))
-            .on('error', notify.onError(function (error) {
-                return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
+            .on('error', notify.onError(function(error) {
+                    return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
             }))
+            .on('error', function() {
+                this.emit('end');
+            })
             .pipe(replace({
               patterns: patterns,
               usePrefix: false
