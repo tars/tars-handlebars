@@ -19,10 +19,10 @@ var handlebarsOptions = {
  * Templates with _ prefix won't be compiled
  * @param  {Object} buildOptions
  */
-module.exports = function(buildOptions) {
+module.exports = function (buildOptions) {
 
     function concatModulesData() {
-        eval('var readyModulesData = {' + fs.readFileSync('./dev/temp/modulesData.js', "utf8") + '}');
+        eval('var readyModulesData = {' + fs.readFileSync('./dev/temp/modulesData.js', 'utf8') + '}');
         return readyModulesData;
     }
 
@@ -76,32 +76,32 @@ module.exports = function(buildOptions) {
         }
     );
 
-    return gulp.task('html:compile-templates', function(cb) {
+    return gulp.task('html:compile-templates', function (cb) {
         var modulesData, error;
 
         try {
             modulesData = concatModulesData();
-        } catch(er) {
+        } catch (er) {
             error = er;
         }
 
         gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html'])
-            .pipe(error ? through2(function () {this.emit('error', '\nAn error occurred while modules data processing:\n' + error)}) : handlebars(modulesData, handlebarsOptions))
-            .on('error', notify.onError(function(error) {
-                    return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
+            .pipe(error ? through2(function() {this.emit('error', '\nAn error occurred while modules data processing:\n' + error);}) : handlebars(modulesData, handlebarsOptions))
+            .on('error', notify.onError(function (error) {
+                return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
             }))
             .on('error', function() {
                 this.emit('end');
             })
             .pipe(replace({
-              patterns: patterns,
-              usePrefix: false
+                patterns: patterns,
+                usePrefix: false
             }))
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while replacing placeholdres.\nLook in the console for details.\n' + error;
             }))
             .pipe(gulp.dest('./dev/'))
-            .pipe(browserSync.reload({stream:true}))
+            .pipe(browserSync.reload({ stream: true }))
             .pipe(
                 notifier('Templates\'ve been compiled')
             );
