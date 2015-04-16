@@ -90,7 +90,7 @@ module.exports = function (buildOptions) {
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
             }))
-            .on('error', function() {
+            .on('error', function () {
                 this.emit('end');
             })
             .pipe(replace({
