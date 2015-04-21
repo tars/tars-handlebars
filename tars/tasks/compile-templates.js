@@ -22,7 +22,21 @@ var handlebarsOptions = {
 module.exports = function (buildOptions) {
 
     function concatModulesData() {
-        eval('var readyModulesData = {' + fs.readFileSync('./dev/temp/modulesData.js', 'utf8') + '}');
+        var dataEntry,
+            readyModulesData;
+
+        try {
+            dataEntry = fs.readFileSync('./dev/temp/modulesData.js', 'utf8');
+        } catch (er) {
+            dataEntry = false;
+        }
+
+        if (dataEntry) {
+            eval('readyModulesData = {' + dataEntry + '}');
+        } else {
+            readyModulesData = '{}';
+        }
+
         return readyModulesData;
     }
 
@@ -83,10 +97,20 @@ module.exports = function (buildOptions) {
             modulesData = concatModulesData();
         } catch (er) {
             error = er;
+            modulesData = false;
         }
 
         return gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html'])
-            .pipe(error ? through2(function () {this.emit('error', '\nAn error occurred while modules data processing:\n' + error);}) : handlebars(modulesData, handlebarsOptions))
+            .pipe(
+                modulesData
+                    ? handlebars(modulesData, handlebarsOptions)
+                    : through2.obj(
+                        function () {
+                            console.log(gutil.colors.red('An error occurred with data-files!'));
+                            this.emit('error', error);
+                        }
+                    )
+            )
             .on('error', notify.onError(function (error) {
                 return '\nAn error occurred while compiling handlebars.\nLook in the console for details.\n' + error;
             }))
