@@ -100,7 +100,8 @@ module.exports = function (buildOptions) {
             modulesData = false;
         }
 
-        return gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html'])
+        return gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html',
+                         './markup/pages/**/*.hbs', '!./markup/pages/**/_*.hbs'])
             .pipe(
                 modulesData
                     ? handlebars(modulesData, handlebarsOptions)
