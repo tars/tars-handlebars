@@ -16,6 +16,7 @@ var handlebarsOptions = {
     };
 var patterns = [];
 
+
 function concatModulesData() {
     var dataEntry;
     var readyModulesData;
