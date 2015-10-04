@@ -12,7 +12,7 @@ var browserSync = tars.packages.browserSync;
 
 var handlebarsOptions = {
         batch: ['./markup/modules'],
-        helpers: require('../../helpers/handlebars-helpers')
+        helpers: require('./utils/handlebars-helpers.js')
     };
 var patterns = [];
 
