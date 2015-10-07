@@ -36,7 +36,7 @@ function concatModulesData() {
     return readyModulesData;
 }
 
-if (!tars.flags.ie8 || !tars.flags.ie) {
+if (!tars.flags.ie8 && !tars.flags.ie) {
     patterns.push(
         {
             match: '<link href="%=staticPrefix=%css/main_ie8%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
@@ -45,7 +45,7 @@ if (!tars.flags.ie8 || !tars.flags.ie) {
     );
 }
 
-if (!tars.flags.ie9 || !tars.flags.ie) {
+if (!tars.flags.ie9 && !tars.flags.ie) {
     patterns.push(
         {
             match: '<link href="%=staticPrefix=%css/main_ie9%=hash=%%=min=%.css" rel="stylesheet" type="text/css">',
