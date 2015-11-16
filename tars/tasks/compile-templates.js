@@ -1,21 +1,20 @@
 'use strict';
 
 var gulp = tars.packages.gulp;
-var gutil = tars.packages.gutil;
 var handlebars = tars.packages.gulpHandlebars;
 var replace = tars.packages.replace;
 var plumber = tars.packages.plumber;
+var rename = tars.packages.rename;
 var through2 = tars.packages.through2;
 var fs = require('fs');
 var notifier = tars.helpers.notifier;
 var browserSync = tars.packages.browserSync;
 
 var handlebarsOptions = {
-        batch: ['./markup/modules'],
-        helpers: require('./helpers/handlebars-helpers.js')
-    };
+    batch: ['./markup/modules'],
+    helpers: require('./helpers/handlebars-helpers.js')
+};
 var patterns = [];
-
 
 function concatModulesData() {
     var dataEntry;
@@ -98,8 +97,8 @@ patterns.push(
  * Templates with _ prefix won't be compiled
  */
 module.exports = function () {
-    return gulp.task('html:compile-templates', function (cb) {
-        var modulesData
+    return gulp.task('html:compile-templates', function () {
+        var modulesData;
         var error;
 
         try {
@@ -112,23 +111,30 @@ module.exports = function () {
         return gulp.src(['./markup/pages/**/*.html', '!./markup/pages/**/_*.html',
                          './markup/pages/**/*.hbs', '!./markup/pages/**/_*.hbs'])
             .pipe(plumber({
-                    errorHandler: function (error) {
-                        notifier.error('An error occurred while compiling handlebars.', error);
-                        this.emit('end');
-                    }
+                errorHandler: function (pipeError) {
+                    notifier.error('An error occurred while compiling handlebars.', pipeError);
+                    this.emit('end');
+                }
             }))
             .pipe(
                 modulesData
                     ? handlebars(modulesData, handlebarsOptions)
                     : through2.obj(
                         function () {
+                            /* eslint-disable no-invalid-this */
+
                             this.emit('error', new Error('An error occurred with data-files!\n' + error));
+
+                            /* eslint-enable no-invalid-this */
                         }
                     )
             )
             .pipe(replace({
                 patterns: patterns,
                 usePrefix: false
+            }))
+            .pipe(rename(function (pathToFileToRename) {
+                pathToFileToRename.extname = '.html'
             }))
             .pipe(gulp.dest('./dev/'))
             .pipe(browserSync.reload({ stream: true }))
