@@ -4,24 +4,26 @@
 <!--[if IE 9 ]><html class="ie9 lt-ie10 no-js" lang="ru"><![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--><html class="no-js" lang="ru"><!--<![endif]-->
 
-<head>
-    {{> head/head head.defaults}}
-</head>
+    <head>
+        {{> head/head head.defaults}}
+    </head>
 
-<body class="page">
+    <body class="page">
 
-    <section class="page__wrapper">
+        <section class="page__wrapper">
 
-        <!-- Include your modules here -->
+            <!-- Include your modules here -->
 
-        <div class="page__buffer"></div>
+            <div class="page__buffer"></div>
 
-    </section>
+        </section>
 
-    <footer class="page__footer">
-        {{> footer/footer}}
-    </footer>
+        <footer class="page__footer">
+            {{> footer/footer}}
+        </footer>
 
-    <!-- Main scripts. You can replace it, but I recommend you to leave it here     -->
-    <script src="%=staticPrefix=%js/main%=hash=%%=min=%.js"></script>
-</body>
+        <!-- Main scripts. You can replace it, but I recommend you to leave it here     -->
+        <script src="%=staticPrefix=%js/main%=hash=%%=min=%.js"></script>
+    </body>
+
+</html>
